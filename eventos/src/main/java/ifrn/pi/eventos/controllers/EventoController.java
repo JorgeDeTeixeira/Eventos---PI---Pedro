@@ -3,8 +3,13 @@ package ifrn.pi.eventos.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +36,11 @@ public class EventoController {
 	}
 
 	@PostMapping
-	public String salvar(Evento evento) {
+	public String salvar(@Valid Evento evento, BindingResult result) {
+		if (result.hasErrors()) {
+			return form(evento);
+		}
+
 		er.save(evento);
 
 		return "redirect:/eventos";
